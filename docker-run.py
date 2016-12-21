@@ -13,7 +13,7 @@ urllib3.disable_warnings()
 def connect(option, host):
     print option
     if option == "local":
-        cli = docker.Client(base_url='unix://var/run/docker.sock')
+        cli = docker.APIClient(base_url='unix://var/run/docker.sock')
     elif option == "remote":
         if os.environ['dockercert'] is None or os.environ['dockerkey'] is None:
             print "Please set your dockercert and dockerkey environment variables."
@@ -23,9 +23,9 @@ def connect(option, host):
             client_cert=(os.environ['dockercert'], os.environ['dockerkey']),
             verify=False
         )
-        cli = docker.Client(base_url=host, tls=tls_config)
+        cli = docker.APIClient(base_url=host, tls=tls_config)
     elif option == "sshtunnel":
-        cli = docker.Client(base_url=host)
+        cli = docker.APIClient(base_url=host)
     else:
         print "Invalid connect option (connect=--local, --remote, --sshtunnel)"
         sys.exit()
